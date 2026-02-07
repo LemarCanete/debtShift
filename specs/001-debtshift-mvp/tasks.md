@@ -174,14 +174,14 @@
 
 ### Implementation for User Story 4
 
-- [ ] T084 [US4] Create components/dashboard/TotalDebtCard.tsx with total debt amount and progress percentage
-- [ ] T085 [US4] Create components/dashboard/ProgressRing.tsx with animated circular progress indicator
-- [ ] T086 [US4] Create components/dashboard/BudgetSnapshot.tsx with income, expenses, safe-to-extra summary
-- [ ] T087 [US4] Create components/dashboard/UpcomingPayments.tsx with next 7 days of due dates
-- [ ] T088 [US4] Create components/dashboard/DailyQuote.tsx with quote/verse display and refresh button
-- [ ] T089 [US4] Create app/(tabs)/dashboard.tsx composing all dashboard components
-- [ ] T090 [US4] Add pull-to-refresh functionality to dashboard
-- [ ] T091 [US4] Create services/quotes.ts with getDailyQuote function (rotate based on date)
+- [x] T084 [US4] Create components/dashboard/TotalDebtCard.tsx with total debt amount and progress percentage
+- [x] T085 [US4] Create components/dashboard/ProgressRing.tsx with animated circular progress indicator
+- [x] T086 [US4] Create components/dashboard/BudgetSnapshot.tsx with income, expenses, safe-to-extra summary
+- [x] T087 [US4] Create components/dashboard/UpcomingPayments.tsx with next 7 days of due dates
+- [x] T088 [US4] Create components/dashboard/DailyQuote.tsx with quote/verse display and refresh button
+- [x] T089 [US4] Create app/(tabs)/dashboard.tsx composing all dashboard components
+- [x] T090 [US4] Add pull-to-refresh functionality to dashboard
+- [x] T091 [US4] Create services/quotes.ts with getDailyQuote function (rotate based on date)
 
 **Checkpoint**: Dashboard provides at-a-glance value
 
