@@ -97,23 +97,23 @@
 
 ### Implementation for User Story 1
 
-- [ ] T046 [US1] Create app/(auth)/login.tsx with email/password form, validation, and error handling
-- [ ] T047 [US1] Create app/(auth)/signup.tsx with email/password form, terms checkbox, and navigation to onboarding
-- [ ] T048 [US1] Create app/(onboarding)/income.tsx with income type selector (steady/variable/mixed) and range inputs
-- [ ] T049 [US1] Create app/(onboarding)/expenses.tsx with common expense quick-add and custom expense form
-- [ ] T050 [US1] Create app/(onboarding)/goal.tsx with goal selector (debt-free ASAP, emergency fund, both) and why_i_started text input
-- [ ] T051 [US1] Create app/(onboarding)/first-debt.tsx with debt form (name, creditor, balance, APR, minimum, due_day)
-- [ ] T052 [US1] Create services/debts.ts with createDebt, getDebts, getDebt, updateDebt, deleteDebt functions
-- [ ] T053 [US1] Create stores/useDebtStore.ts with debts state and CRUD actions
-- [ ] T054 [US1] Create hooks/useDebts.ts with React Query hooks (useDebts, useDebt, useCreateDebt, useUpdateDebt, useDeleteDebt)
-- [ ] T055 [US1] Create components/debt/DebtForm.tsx with validation and submission
-- [ ] T056 [US1] Create components/debt/DebtCard.tsx with balance, APR, progress bar, color indicator
-- [ ] T057 [US1] Create app/(tabs)/debts.tsx with debt list, FAB to add debt, empty state
-- [ ] T058 [US1] Create app/debt/[id].tsx with debt detail, payment history, edit/delete actions
-- [ ] T059 [US1] Create services/calculator.ts with calculatePayoffDate function using snowball/avalanche strategies
-- [ ] T060 [US1] Create components/debt/PayoffChart.tsx with projected balance over time visualization
-- [ ] T061 [US1] Add payoff projection display to app/debt/[id].tsx
-- [ ] T062 [US1] Update stores/useAuthStore.ts to track onboarding_completed and redirect appropriately
+- [x] T046 [US1] Create app/(auth)/login.tsx with email/password form, validation, and error handling
+- [x] T047 [US1] Create app/(auth)/signup.tsx with email/password form, terms checkbox, and navigation to onboarding
+- [x] T048 [US1] Create app/(onboarding)/income.tsx with income type selector (steady/variable/mixed) and range inputs
+- [x] T049 [US1] Create app/(onboarding)/expenses.tsx with common expense quick-add and custom expense form
+- [x] T050 [US1] Create app/(onboarding)/goal.tsx with goal selector (debt-free ASAP, emergency fund, both) and why_i_started text input
+- [x] T051 [US1] Create app/(onboarding)/first-debt.tsx with debt form (name, creditor, balance, APR, minimum, due_day)
+- [x] T052 [US1] Create services/debts.ts with createDebt, getDebts, getDebt, updateDebt, deleteDebt functions
+- [x] T053 [US1] Create stores/useDebtStore.ts with debts state and CRUD actions
+- [x] T054 [US1] Create hooks/useDebts.ts with React Query hooks (useDebts, useDebt, useCreateDebt, useUpdateDebt, useDeleteDebt)
+- [x] T055 [US1] Create components/debt/DebtForm.tsx with validation and submission
+- [x] T056 [US1] Create components/debt/DebtCard.tsx with balance, APR, progress bar, color indicator
+- [x] T057 [US1] Create app/(tabs)/debts.tsx with debt list, FAB to add debt, empty state
+- [x] T058 [US1] Create app/debt/[id].tsx with debt detail, payment history, edit/delete actions
+- [x] T059 [US1] Create services/calculator.ts with calculatePayoffDate function using snowball/avalanche strategies
+- [x] T060 [US1] Create components/debt/PayoffChart.tsx with projected balance over time visualization
+- [x] T061 [US1] Add payoff projection display to app/debt/[id].tsx
+- [x] T062 [US1] Update stores/useAuthStore.ts to track onboarding_completed and redirect appropriately
 
 **Checkpoint**: User can sign up, onboard, add debt, and see debt-free date. MVP functional.
 
