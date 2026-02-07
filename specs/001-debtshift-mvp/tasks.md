@@ -152,15 +152,15 @@
 
 ### Implementation for User Story 3
 
-- [ ] T075 [US3] Create services/payments.ts with logPayment, getPayments, getPaymentsForDebt functions
-- [ ] T076 [US3] Create stores/usePaymentStore.ts with payments state and actions
-- [ ] T077 [US3] Create hooks/usePayments.ts with React Query hooks and optimistic updates
-- [ ] T078 [US3] Add payment logging form to app/debt/[id].tsx with amount, date, is_extra toggle
-- [ ] T079 [US3] Add payment history list to app/debt/[id].tsx with date, amount, extra badge
-- [ ] T080 [US3] Create Supabase trigger to update debt.balance on payment insert
-- [ ] T081 [US3] Add haptic feedback (expo-haptics) on successful payment logging
-- [ ] T082 [US3] Update useDebtStore to recalculate totalDebt and progress after payment
-- [ ] T083 [US3] Add "extra payment" celebration toast when is_extra is true
+- [x] T075 [US3] Create services/payments.ts with logPayment, getPayments, getPaymentsForDebt functions
+- [x] T076 [US3] Create stores/usePaymentStore.ts with payments state and actions
+- [x] T077 [US3] Create hooks/usePayments.ts with React Query hooks and optimistic updates
+- [x] T078 [US3] Add payment logging form to app/debt/[id].tsx with amount, date, is_extra toggle
+- [x] T079 [US3] Add payment history list to app/debt/[id].tsx with date, amount, extra badge
+- [x] T080 [US3] Create Supabase trigger to update debt.balance on payment insert
+- [x] T081 [US3] Add haptic feedback (expo-haptics) on successful payment logging
+- [x] T082 [US3] Update useDebtStore to recalculate totalDebt and progress after payment
+- [x] T083 [US3] Add "extra payment" celebration toast when is_extra is true
 
 **Checkpoint**: Core P1 stories complete. Full MVP functionality delivered.
 

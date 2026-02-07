@@ -24,3 +24,12 @@ export {
   useUpdateExpense,
   useDeleteExpense,
 } from './useBudget';
+export {
+  paymentKeys,
+  usePaymentList,
+  usePaymentsForDebt,
+  usePaymentStats,
+  useMonthlyPayments,
+  useLogPayment,
+  useDeletePayment,
+} from './usePayments';

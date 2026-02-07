@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,29 +7,63 @@ import {
   Pressable,
   Alert,
   RefreshControl,
+  Switch,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { useLocalSearchParams, router, Stack } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 import { colors, typography, spacing } from '@/theme';
-import { Button, Card, Skeleton, Modal } from '@/components/ui';
+import { Button, Card, Skeleton, Modal, Input } from '@/components/ui';
 import { DebtForm } from '@/components/debt';
 import { PayoffChart } from '@/components/debt/PayoffChart';
 import { useDebt, useUpdateDebt, useDeleteDebt } from '@/hooks/useDebts';
-import { formatCurrency, formatPercent, formatDate } from '@/utils/formatters';
+import { usePaymentsForDebt, useLogPayment, useDeletePayment } from '@/hooks/usePayments';
+import { formatCurrency, formatPercent, formatDate, formatShortDate } from '@/utils/formatters';
 import { getDebtTypeLabel } from '@/utils/constants';
 import { calculatePayoffDate, calculateMonthsUntilDebtFree } from '@/utils/calculations';
-import type { TablesUpdate } from '@/types/database';
+import type { TablesUpdate, Payment } from '@/types/database';
 
 /**
- * Debt Detail Screen - View and manage individual debt
+ * Debt Detail Screen - View and manage individual debt with payment tracking
  */
 export default function DebtDetailScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, openPayment } = useLocalSearchParams<{ id: string; openPayment?: string }>();
   const { data: debt, isLoading, refetch, isRefetching } = useDebt(id);
+  const { data: payments, refetch: refetchPayments } = usePaymentsForDebt(id);
   const updateMutation = useUpdateDebt();
   const deleteMutation = useDeleteDebt();
+  const logPaymentMutation = useLogPayment();
+  const deletePaymentMutation = useDeletePayment();
 
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showPaymentForm, setShowPaymentForm] = useState(openPayment === 'true');
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [celebrationMessage, setCelebrationMessage] = useState('');
+
+  // Payment form state
+  const [paymentAmount, setPaymentAmount] = useState('');
+  const [paymentDate, setPaymentDate] = useState(new Date().toISOString().split('T')[0]);
+  const [isExtraPayment, setIsExtraPayment] = useState(false);
+  const [paymentNotes, setPaymentNotes] = useState('');
+  const [paymentError, setPaymentError] = useState('');
+
+  // Reset form when closing
+  useEffect(() => {
+    if (!showPaymentForm) {
+      setPaymentAmount('');
+      setPaymentDate(new Date().toISOString().split('T')[0]);
+      setIsExtraPayment(false);
+      setPaymentNotes('');
+      setPaymentError('');
+    }
+  }, [showPaymentForm]);
+
+  const handleRefresh = async () => {
+    await Promise.all([refetch(), refetchPayments()]);
+  };
 
   if (isLoading) {
     return (
@@ -92,6 +126,75 @@ export default function DebtDetailScreen() {
     }
   };
 
+  const handleLogPayment = async () => {
+    setPaymentError('');
+
+    const amount = parseFloat(paymentAmount);
+    if (!amount || amount <= 0) {
+      setPaymentError('Please enter a valid amount');
+      return;
+    }
+
+    if (amount > currentBalance) {
+      setPaymentError(`Payment cannot exceed balance of ${formatCurrency(currentBalance)}`);
+      return;
+    }
+
+    try {
+      const result = await logPaymentMutation.mutateAsync({
+        debt_id: debt.id,
+        amount,
+        payment_date: paymentDate,
+        is_extra: isExtraPayment,
+        notes: paymentNotes || undefined,
+      });
+
+      // Haptic feedback on success (T081)
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
+      setShowPaymentForm(false);
+
+      // Show celebration for extra payments (T083)
+      if (isExtraPayment) {
+        setCelebrationMessage("You made an extra payment! Every extra dollar counts!");
+        setShowCelebration(true);
+      } else if (result?.milestoneAchieved) {
+        // Show milestone celebration
+        setCelebrationMessage(result.milestoneAchieved.message);
+        setShowCelebration(true);
+      }
+
+      // Refresh data
+      handleRefresh();
+    } catch (error) {
+      setPaymentError(
+        error instanceof Error ? error.message : 'Failed to log payment'
+      );
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+    }
+  };
+
+  const handleDeletePayment = (payment: Payment) => {
+    Alert.alert(
+      'Delete Payment',
+      `Are you sure you want to delete this ${formatCurrency(payment.amount)} payment?`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            await deletePaymentMutation.mutateAsync({
+              id: payment.id,
+              debtId: debt.id,
+            });
+            handleRefresh();
+          },
+        },
+      ]
+    );
+  };
+
   if (isEditing) {
     return (
       <>
@@ -126,7 +229,7 @@ export default function DebtDetailScreen() {
         refreshControl={
           <RefreshControl
             refreshing={isRefetching}
-            onRefresh={refetch}
+            onRefresh={handleRefresh}
             tintColor={colors.primary}
           />
         }
@@ -161,28 +264,41 @@ export default function DebtDetailScreen() {
           </View>
 
           {!isPaidOff && (
-            <View style={styles.progressSection}>
-              <View style={styles.progressBar}>
-                <View
-                  style={[
-                    styles.progressFill,
-                    {
-                      width: `${progressPercent}%`,
-                      backgroundColor: debt.color || colors.primary,
-                    },
-                  ]}
-                />
+            <>
+              <View style={styles.progressSection}>
+                <View style={styles.progressBar}>
+                  <View
+                    style={[
+                      styles.progressFill,
+                      {
+                        width: `${progressPercent}%`,
+                        backgroundColor: debt.color || colors.primary,
+                      },
+                    ]}
+                  />
+                </View>
+                <View style={styles.progressLabels}>
+                  <Text style={styles.progressText}>
+                    {progressPercent.toFixed(0)}% paid off
+                  </Text>
+                  <Text style={styles.progressText}>
+                    {formatCurrency(originalBalance - currentBalance)} of{' '}
+                    {formatCurrency(originalBalance)}
+                  </Text>
+                </View>
               </View>
-              <View style={styles.progressLabels}>
-                <Text style={styles.progressText}>
-                  {progressPercent.toFixed(0)}% paid off
-                </Text>
-                <Text style={styles.progressText}>
-                  {formatCurrency(originalBalance - currentBalance)} of{' '}
-                  {formatCurrency(originalBalance)}
-                </Text>
-              </View>
-            </View>
+
+              {/* Log Payment Button */}
+              <Button
+                onPress={() => setShowPaymentForm(true)}
+                style={styles.logPaymentButton}
+              >
+                <View style={styles.logPaymentContent}>
+                  <Ionicons name="add-circle" size={20} color={colors.background} />
+                  <Text style={styles.logPaymentText}>Log Payment</Text>
+                </View>
+              </Button>
+            </>
           )}
         </Card>
 
@@ -255,17 +371,73 @@ export default function DebtDetailScreen() {
           </Card>
         )}
 
-        {/* Payment History Section Placeholder */}
+        {/* Payment History Section (T079) */}
         <Card style={styles.historyCard}>
-          <Text style={styles.sectionTitle}>Payment History</Text>
-          <View style={styles.emptyHistory}>
-            <Text style={styles.emptyHistoryText}>
-              No payments logged yet
-            </Text>
-            <Button variant="secondary" size="sm">
-              Log a Payment
-            </Button>
+          <View style={styles.historyHeader}>
+            <Text style={styles.sectionTitle}>Payment History</Text>
+            {(payments?.length || 0) > 0 && (
+              <Text style={styles.historyCount}>
+                {payments?.length} payment{payments?.length !== 1 ? 's' : ''}
+              </Text>
+            )}
           </View>
+
+          {(payments?.length || 0) > 0 ? (
+            <View style={styles.paymentList}>
+              {payments?.map((payment) => (
+                <Pressable
+                  key={payment.id}
+                  style={({ pressed }) => [
+                    styles.paymentItem,
+                    pressed && styles.paymentItemPressed,
+                  ]}
+                  onLongPress={() => handleDeletePayment(payment)}
+                >
+                  <View style={styles.paymentInfo}>
+                    <View style={styles.paymentMain}>
+                      <Text style={styles.paymentAmount}>
+                        {formatCurrency(payment.amount)}
+                      </Text>
+                      {payment.is_extra && (
+                        <View style={styles.extraBadge}>
+                          <Ionicons name="flash" size={10} color={colors.primary} />
+                          <Text style={styles.extraBadgeText}>Extra</Text>
+                        </View>
+                      )}
+                    </View>
+                    <Text style={styles.paymentDate}>
+                      {formatShortDate(payment.payment_date)}
+                    </Text>
+                    {payment.notes && (
+                      <Text style={styles.paymentNotes} numberOfLines={1}>
+                        {payment.notes}
+                      </Text>
+                    )}
+                  </View>
+                  <Ionicons
+                    name="chevron-forward"
+                    size={16}
+                    color={colors.text.muted}
+                  />
+                </Pressable>
+              ))}
+            </View>
+          ) : (
+            <View style={styles.emptyHistory}>
+              <Text style={styles.emptyHistoryText}>
+                No payments logged yet
+              </Text>
+              {!isPaidOff && (
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onPress={() => setShowPaymentForm(true)}
+                >
+                  Log a Payment
+                </Button>
+              )}
+            </View>
+          )}
         </Card>
 
         {/* Actions */}
@@ -283,6 +455,106 @@ export default function DebtDetailScreen() {
           </Button>
         </View>
       </ScrollView>
+
+      {/* Payment Form Modal (T078) */}
+      <Modal
+        visible={showPaymentForm}
+        onClose={() => setShowPaymentForm(false)}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
+          <View style={styles.paymentModal}>
+            <View style={styles.paymentModalHeader}>
+              <Text style={styles.paymentModalTitle}>Log Payment</Text>
+              <Text style={styles.paymentModalSubtitle}>
+                Balance: {formatCurrency(currentBalance)}
+              </Text>
+            </View>
+
+            <Input
+              label="Amount"
+              value={paymentAmount}
+              onChangeText={setPaymentAmount}
+              placeholder="0.00"
+              keyboardType="decimal-pad"
+              leftIcon="cash-outline"
+              isCurrency
+              error={paymentError}
+            />
+
+            <Input
+              label="Date"
+              value={paymentDate}
+              onChangeText={setPaymentDate}
+              placeholder="YYYY-MM-DD"
+              leftIcon="calendar-outline"
+            />
+
+            <View style={styles.extraToggle}>
+              <View style={styles.extraToggleInfo}>
+                <Ionicons
+                  name="flash"
+                  size={20}
+                  color={isExtraPayment ? colors.primary : colors.text.muted}
+                />
+                <View>
+                  <Text style={styles.extraToggleLabel}>Extra Payment</Text>
+                  <Text style={styles.extraToggleHint}>
+                    Above minimum payment
+                  </Text>
+                </View>
+              </View>
+              <Switch
+                value={isExtraPayment}
+                onValueChange={setIsExtraPayment}
+                trackColor={{ false: colors.surfaceHover, true: colors.primary }}
+                thumbColor={colors.background}
+              />
+            </View>
+
+            <Input
+              label="Notes (optional)"
+              value={paymentNotes}
+              onChangeText={setPaymentNotes}
+              placeholder="e.g., Tax refund, bonus payment"
+              multiline
+            />
+
+            <View style={styles.paymentModalActions}>
+              <Button
+                variant="secondary"
+                onPress={() => setShowPaymentForm(false)}
+                style={styles.paymentModalButton}
+              >
+                Cancel
+              </Button>
+              <Button
+                onPress={handleLogPayment}
+                isLoading={logPaymentMutation.isPending}
+                style={styles.paymentModalButton}
+              >
+                Log Payment
+              </Button>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
+
+      {/* Celebration Modal (T083) */}
+      <Modal
+        visible={showCelebration}
+        onClose={() => setShowCelebration(false)}
+      >
+        <View style={styles.celebrationModal}>
+          <Text style={styles.celebrationEmoji}>🎉</Text>
+          <Text style={styles.celebrationTitle}>Amazing!</Text>
+          <Text style={styles.celebrationMessage}>{celebrationMessage}</Text>
+          <Button onPress={() => setShowCelebration(false)} fullWidth>
+            Keep Going!
+          </Button>
+        </View>
+      </Modal>
 
       {/* Delete Confirmation Modal */}
       <Modal
@@ -402,7 +674,9 @@ const styles = StyleSheet.create({
   balancePaidOff: {
     color: colors.success,
   },
-  progressSection: {},
+  progressSection: {
+    marginBottom: spacing.md,
+  },
   progressBar: {
     height: 8,
     backgroundColor: colors.surfaceHover,
@@ -421,6 +695,19 @@ const styles = StyleSheet.create({
   progressText: {
     ...typography.caption,
     color: colors.text.muted,
+  },
+  logPaymentButton: {
+    marginTop: spacing.sm,
+  },
+  logPaymentContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  logPaymentText: {
+    ...typography.body,
+    color: colors.background,
+    fontWeight: '600',
   },
   detailsCard: {
     padding: spacing.lg,
@@ -480,6 +767,67 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     marginBottom: spacing.md,
   },
+  historyHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.md,
+  },
+  historyCount: {
+    ...typography.small,
+    color: colors.text.muted,
+  },
+  paymentList: {
+    gap: spacing.xs,
+  },
+  paymentItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: spacing.sm,
+    backgroundColor: colors.surfaceHover,
+    borderRadius: spacing.borderRadius.md,
+  },
+  paymentItemPressed: {
+    opacity: 0.7,
+  },
+  paymentInfo: {
+    flex: 1,
+  },
+  paymentMain: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  paymentAmount: {
+    ...typography.body,
+    color: colors.text.primary,
+    fontWeight: '600',
+  },
+  extraBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    backgroundColor: colors.primary + '20',
+    paddingHorizontal: spacing.xs,
+    paddingVertical: 2,
+    borderRadius: spacing.borderRadius.sm,
+  },
+  extraBadgeText: {
+    ...typography.caption,
+    color: colors.primary,
+    fontWeight: '600',
+  },
+  paymentDate: {
+    ...typography.small,
+    color: colors.text.muted,
+    marginTop: 2,
+  },
+  paymentNotes: {
+    ...typography.caption,
+    color: colors.text.secondary,
+    marginTop: 2,
+  },
   emptyHistory: {
     alignItems: 'center',
     paddingVertical: spacing.md,
@@ -492,6 +840,71 @@ const styles = StyleSheet.create({
   actions: {
     gap: spacing.sm,
     marginTop: spacing.md,
+  },
+  paymentModal: {
+    padding: spacing.lg,
+  },
+  paymentModalHeader: {
+    marginBottom: spacing.lg,
+  },
+  paymentModalTitle: {
+    ...typography.h2,
+    color: colors.text.primary,
+  },
+  paymentModalSubtitle: {
+    ...typography.body,
+    color: colors.text.muted,
+  },
+  extraToggle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: colors.surface,
+    padding: spacing.md,
+    borderRadius: spacing.borderRadius.md,
+    marginBottom: spacing.md,
+  },
+  extraToggleInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  extraToggleLabel: {
+    ...typography.body,
+    color: colors.text.primary,
+    fontWeight: '500',
+  },
+  extraToggleHint: {
+    ...typography.small,
+    color: colors.text.muted,
+  },
+  paymentModalActions: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginTop: spacing.md,
+  },
+  paymentModalButton: {
+    flex: 1,
+  },
+  celebrationModal: {
+    padding: spacing.xl,
+    alignItems: 'center',
+  },
+  celebrationEmoji: {
+    fontSize: 64,
+    marginBottom: spacing.md,
+  },
+  celebrationTitle: {
+    ...typography.h1,
+    color: colors.text.primary,
+    marginBottom: spacing.sm,
+  },
+  celebrationMessage: {
+    ...typography.body,
+    color: colors.text.secondary,
+    textAlign: 'center',
+    marginBottom: spacing.lg,
+    lineHeight: 24,
   },
   deleteModal: {
     padding: spacing.lg,

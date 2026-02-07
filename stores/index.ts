@@ -20,3 +20,13 @@ export {
   useBudgetError,
   useSelectedMonth,
 } from './useBudgetStore';
+export {
+  usePaymentStore,
+  usePayments,
+  useRecentPayments,
+  usePaymentLoading,
+  usePaymentError,
+  useTotalPaid,
+  useTotalExtraPaid,
+  useLastMilestone,
+} from './usePaymentStore';
