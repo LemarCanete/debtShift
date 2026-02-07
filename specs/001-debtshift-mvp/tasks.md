@@ -219,15 +219,15 @@
 
 ### Implementation for User Story 6
 
-- [ ] T103 [US6] Create services/planner.ts with getPlannedPayments, createPlannedPayment, updatePlannedPayment, markComplete, deletePlannedPayment functions
-- [ ] T104 [US6] Create stores/usePlannerStore.ts with plannedPayments state and actions
-- [ ] T105 [US6] Create hooks/usePlanner.ts with React Query hooks
-- [ ] T106 [US6] Create components/planner/CalendarView.tsx with month grid and event dots
-- [ ] T107 [US6] Create components/planner/PlannedPaymentCard.tsx with debt, amount, date, complete button
-- [ ] T108 [US6] Create components/planner/PayoffTimeline.tsx with projected balance chart over months
-- [ ] T109 [US6] Create app/planner.tsx with CalendarView, PlannedPaymentCard list, add button
-- [ ] T110 [US6] Add markComplete action that creates actual payment record and updates debt balance
-- [ ] T111 [US6] Create supabase/functions/calculate-payoff/index.ts for complex payoff projections
+- [x] T103 [US6] Create services/planner.ts with getPlannedPayments, createPlannedPayment, updatePlannedPayment, markComplete, deletePlannedPayment functions
+- [x] T104 [US6] Create stores/usePlannerStore.ts with plannedPayments state and actions
+- [x] T105 [US6] Create hooks/usePlanner.ts with React Query hooks
+- [x] T106 [US6] Create components/planner/CalendarView.tsx with month grid and event dots
+- [x] T107 [US6] Create components/planner/PlannedPaymentCard.tsx with debt, amount, date, complete button
+- [x] T108 [US6] Create components/planner/PayoffTimeline.tsx with projected balance chart over months
+- [x] T109 [US6] Create app/planner.tsx with CalendarView, PlannedPaymentCard list, add button
+- [x] T110 [US6] Add markComplete action that creates actual payment record and updates debt balance
+- [x] T111 [US6] Create supabase/functions/calculate-payoff/index.ts for complex payoff projections
 
 **Checkpoint**: Users can plan ahead and visualize progress
 
