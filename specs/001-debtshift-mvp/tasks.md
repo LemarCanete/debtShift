@@ -17,21 +17,21 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Initialize Expo project with TypeScript template using `npx create-expo-app@latest debtshift --template expo-template-blank-typescript`
-- [ ] T002 Install core dependencies: `expo install expo-router react-native-reanimated react-native-gesture-handler react-native-screens react-native-safe-area-context`
-- [ ] T003 [P] Install state management: `npm install zustand @tanstack/react-query @tanstack/react-query-persist-client`
-- [ ] T004 [P] Install Supabase client: `npm install @supabase/supabase-js`
-- [ ] T005 [P] Install NativeWind and Tailwind: `npm install nativewind tailwindcss` and configure in tailwind.config.js
-- [ ] T006 [P] Install utilities: `npm install decimal.js date-fns zod expo-haptics expo-clipboard`
-- [ ] T007 Configure TypeScript strict mode in tsconfig.json with `strict: true`
-- [ ] T008 [P] Configure ESLint with TypeScript rules in .eslintrc.js
-- [ ] T009 [P] Configure Prettier in .prettierrc
-- [ ] T010 Create app/_layout.tsx with providers (QueryClient, Supabase, Theme)
-- [ ] T011 Create theme/colors.ts with design tokens (background: #0A0A0B, surface: #141416, primary: #F59E0B, success: #10B981)
-- [ ] T012 [P] Create theme/typography.ts with font scale (hero: 32px to caption: 12px)
-- [ ] T013 [P] Create theme/spacing.ts with spacing scale
-- [ ] T014 Create theme/index.ts barrel export
-- [ ] T015 Create .env.example with EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY placeholders
+- [x] T001 Initialize Expo project with TypeScript template using `npx create-expo-app@latest debtshift --template expo-template-blank-typescript`
+- [x] T002 Install core dependencies: `expo install expo-router react-native-reanimated react-native-gesture-handler react-native-screens react-native-safe-area-context`
+- [x] T003 [P] Install state management: `npm install zustand @tanstack/react-query @tanstack/react-query-persist-client`
+- [x] T004 [P] Install Supabase client: `npm install @supabase/supabase-js`
+- [x] T005 [P] Install NativeWind and Tailwind: `npm install nativewind tailwindcss` and configure in tailwind.config.js
+- [x] T006 [P] Install utilities: `npm install decimal.js date-fns zod expo-haptics expo-clipboard`
+- [x] T007 Configure TypeScript strict mode in tsconfig.json with `strict: true`
+- [x] T008 [P] Configure ESLint with TypeScript rules in .eslintrc.js
+- [x] T009 [P] Configure Prettier in .prettierrc
+- [x] T010 Create app/_layout.tsx with providers (QueryClient, Supabase, Theme)
+- [x] T011 Create theme/colors.ts with design tokens (background: #0A0A0B, surface: #141416, primary: #F59E0B, success: #10B981)
+- [x] T012 [P] Create theme/typography.ts with font scale (hero: 32px to caption: 12px)
+- [x] T013 [P] Create theme/spacing.ts with spacing scale
+- [x] T014 Create theme/index.ts barrel export
+- [x] T015 Create .env.example with EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY placeholders
 
 **Checkpoint**: Project scaffolding complete, ready for infrastructure
 
