@@ -45,45 +45,45 @@
 
 ### Database Schema
 
-- [ ] T016 Create supabase/migrations/001_initial_schema.sql with users table (id, email, income_type, income_min, income_typical, income_max, payoff_strategy, why_i_started, onboarding_completed, subscription_tier, ai_messages_used, created_at, updated_at)
-- [ ] T017 Add debts table to migration (id, user_id, name, creditor, debt_type, balance, original_balance, apr, minimum_payment, due_day, color, is_active, paid_off_at, created_at, updated_at)
-- [ ] T018 Add payments table to migration (id, user_id, debt_id, amount, payment_date, is_extra, notes, created_at)
-- [ ] T019 Add expenses and expense_categories tables to migration
-- [ ] T020 Add income_logs and monthly_budgets tables to migration
-- [ ] T021 Add planned_payments and reminders tables to migration
-- [ ] T022 Add journal_entries and chat_messages tables to migration
-- [ ] T023 Add lessons, lesson_progress, creditors, milestones, daily_quotes tables to migration
-- [ ] T024 Add RLS policies for all user-owned tables (users can only access their own data)
-- [ ] T025 Add database functions: calculate_safe_to_extra, calculate_debt_progress, check_milestone_achievement
-- [ ] T026 Create supabase/seed.sql with expense_categories, lessons, creditors, daily_quotes seed data
-- [ ] T027 Apply migration to Supabase project
+- [x] T016 Create supabase/migrations/001_initial_schema.sql with users table (id, email, income_type, income_min, income_typical, income_max, payoff_strategy, why_i_started, onboarding_completed, subscription_tier, ai_messages_used, created_at, updated_at)
+- [x] T017 Add debts table to migration (id, user_id, name, creditor, debt_type, balance, original_balance, apr, minimum_payment, due_day, color, is_active, paid_off_at, created_at, updated_at)
+- [x] T018 Add payments table to migration (id, user_id, debt_id, amount, payment_date, is_extra, notes, created_at)
+- [x] T019 Add expenses and expense_categories tables to migration
+- [x] T020 Add income_logs and monthly_budgets tables to migration
+- [x] T021 Add planned_payments and reminders tables to migration
+- [x] T022 Add journal_entries and chat_messages tables to migration
+- [x] T023 Add lessons, lesson_progress, creditors, milestones, daily_quotes tables to migration
+- [x] T024 Add RLS policies for all user-owned tables (users can only access their own data)
+- [x] T025 Add database functions: calculate_safe_to_extra, calculate_debt_progress, check_milestone_achievement
+- [x] T026 Create supabase/seed.sql with expense_categories, lessons, creditors, daily_quotes seed data
+- [x] T027 Apply migration to Supabase project
 
 ### Core Services
 
-- [ ] T028 Create services/supabase.ts with client initialization and types
-- [ ] T029 Create services/auth.ts with signUp, signIn, signOut, resetPassword, getCurrentUser functions
-- [ ] T030 Create stores/useAuthStore.ts with user state, isAuthenticated, isLoading, actions
-- [ ] T031 Create utils/constants.ts with app-wide constants (DEBT_TYPES, INCOME_SOURCES, EXPENSE_CATEGORIES, etc.)
-- [ ] T032 [P] Create utils/formatters.ts with formatCurrency, formatDate, formatPercent functions
-- [ ] T033 [P] Create utils/validators.ts with Zod schemas for all entities
-- [ ] T034 Create utils/calculations.ts with calculateProgress, calculatePayoffDate, calculateSafeToExtra functions using Decimal.js
-- [ ] T035 Create hooks/useOffline.ts with React Query persistence and network detection
+- [x] T028 Create services/supabase.ts with client initialization and types
+- [x] T029 Create services/auth.ts with signUp, signIn, signOut, resetPassword, getCurrentUser functions
+- [x] T030 Create stores/useAuthStore.ts with user state, isAuthenticated, isLoading, actions
+- [x] T031 Create utils/constants.ts with app-wide constants (DEBT_TYPES, INCOME_SOURCES, EXPENSE_CATEGORIES, etc.)
+- [x] T032 [P] Create utils/formatters.ts with formatCurrency, formatDate, formatPercent functions
+- [x] T033 [P] Create utils/validators.ts with Zod schemas for all entities
+- [x] T034 Create utils/calculations.ts with calculateProgress, calculatePayoffDate, calculateSafeToExtra functions using Decimal.js
+- [x] T035 Create hooks/useOffline.ts with React Query persistence and network detection
 
 ### Base UI Components
 
-- [ ] T036 Create components/ui/Button.tsx with variants (primary, secondary, ghost, danger) and loading state
-- [ ] T037 [P] Create components/ui/Card.tsx with surface styling and optional press handler
-- [ ] T038 [P] Create components/ui/Input.tsx with label, error state, and currency input mode
-- [ ] T039 [P] Create components/ui/Modal.tsx with backdrop and slide-up animation
-- [ ] T040 [P] Create components/ui/Skeleton.tsx for loading states
-- [ ] T041 Create components/ui/index.ts barrel export
+- [x] T036 Create components/ui/Button.tsx with variants (primary, secondary, ghost, danger) and loading state
+- [x] T037 [P] Create components/ui/Card.tsx with surface styling and optional press handler
+- [x] T038 [P] Create components/ui/Input.tsx with label, error state, and currency input mode
+- [x] T039 [P] Create components/ui/Modal.tsx with backdrop and slide-up animation
+- [x] T040 [P] Create components/ui/Skeleton.tsx for loading states
+- [x] T041 Create components/ui/index.ts barrel export
 
 ### Navigation Shell
 
-- [ ] T042 Create app/(auth)/_layout.tsx with auth stack navigator
-- [ ] T043 Create app/(onboarding)/_layout.tsx with onboarding stack navigator
-- [ ] T044 Create app/(tabs)/_layout.tsx with bottom tab navigator (Home, Budget, Debts, Shift, More)
-- [ ] T045 Update app/_layout.tsx with auth state routing (auth → onboarding → tabs)
+- [x] T042 Create app/(auth)/_layout.tsx with auth stack navigator
+- [x] T043 Create app/(onboarding)/_layout.tsx with onboarding stack navigator
+- [x] T044 Create app/(tabs)/_layout.tsx with bottom tab navigator (Home, Budget, Debts, Shift, More)
+- [x] T045 Update app/_layout.tsx with auth state routing (auth → onboarding → tabs)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin
 
