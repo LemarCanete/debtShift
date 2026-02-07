@@ -195,17 +195,17 @@
 
 ### Implementation for User Story 5
 
-- [ ] T092 [US5] Create supabase/functions/ai-companion/index.ts Edge Function with Claude API integration
-- [ ] T093 [US5] Add system prompt to ai-companion with user context injection (debts, balances, strategy)
-- [ ] T094 [US5] Create services/ai.ts with sendMessage function calling Edge Function
-- [ ] T095 [US5] Create stores/useChatStore.ts with messages state and sendMessage action
-- [ ] T096 [US5] Create hooks/useChat.ts with React Query mutation for sending messages
-- [ ] T097 [US5] Create components/companion/ChatBubble.tsx with user/assistant styling
-- [ ] T098 [US5] Create components/companion/MessageInput.tsx with text input and send button
-- [ ] T099 [US5] Create components/companion/SuggestedQuestions.tsx with tap-to-ask quick questions
-- [ ] T100 [US5] Create app/(tabs)/companion.tsx with chat interface
-- [ ] T101 [US5] Add AI message limit tracking (5/month for free tier) with upgrade prompt
-- [ ] T102 [US5] Add loading state with typing indicator during AI response
+- [x] T092 [US5] Create supabase/functions/ai-companion/index.ts Edge Function with Claude API integration
+- [x] T093 [US5] Add system prompt to ai-companion with user context injection (debts, balances, strategy)
+- [x] T094 [US5] Create services/ai.ts with sendMessage function calling Edge Function
+- [x] T095 [US5] Create stores/useChatStore.ts with messages state and sendMessage action
+- [x] T096 [US5] Create hooks/useChat.ts with React Query mutation for sending messages
+- [x] T097 [US5] Create components/companion/ChatBubble.tsx with user/assistant styling
+- [x] T098 [US5] Create components/companion/MessageInput.tsx with text input and send button
+- [x] T099 [US5] Create components/companion/SuggestedQuestions.tsx with tap-to-ask quick questions
+- [x] T100 [US5] Create app/(tabs)/companion.tsx with chat interface
+- [x] T101 [US5] Add AI message limit tracking (5/month for free tier) with upgrade prompt
+- [x] T102 [US5] Add loading state with typing indicator during AI response
 
 **Checkpoint**: AI companion provides personalized guidance
 

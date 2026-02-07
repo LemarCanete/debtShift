@@ -30,3 +30,13 @@ export {
   useTotalExtraPaid,
   useLastMilestone,
 } from './usePaymentStore';
+export {
+  useChatStore,
+  useChatMessages,
+  useChatLoading,
+  useChatSending,
+  useChatTyping,
+  useChatError,
+  useChatUsage,
+  useHasMessages,
+} from './useChatStore';

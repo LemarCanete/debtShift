@@ -33,3 +33,12 @@ export {
   useLogPayment,
   useDeletePayment,
 } from './usePayments';
+export {
+  chatKeys,
+  useChatHistory,
+  useMessageUsage,
+  useSendMessage,
+  useClearChatHistory,
+  useCanSendMessage,
+  useIsAtMessageLimit,
+} from './useChat';
