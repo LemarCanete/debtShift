@@ -127,18 +127,18 @@
 
 ### Implementation for User Story 2
 
-- [ ] T063 [US2] Create services/budget.ts with getMonthlyBudget, logIncome, getIncomeForMonth, getExpenses, createExpense, updateExpense, deleteExpense functions
-- [ ] T064 [US2] Create stores/useBudgetStore.ts with income, expenses, monthlyBudget state and actions
-- [ ] T065 [US2] Create hooks/useBudget.ts with React Query hooks for budget operations
-- [ ] T066 [US2] Create components/budget/MonthSelector.tsx with month/year picker
-- [ ] T067 [US2] Create components/budget/IncomeCard.tsx with income by source breakdown and add income button
-- [ ] T068 [US2] Create components/budget/ExpenseList.tsx with grouped expenses (essential vs non-essential)
-- [ ] T069 [US2] Create components/budget/SafeToPayCard.tsx with prominent safe-to-extra amount and suggested debt
-- [ ] T070 [US2] Create app/(tabs)/budget.tsx with MonthSelector, IncomeCard, ExpenseList, SafeToPayCard
-- [ ] T071 [US2] Create app/income/log.tsx modal for logging income (amount, source, notes)
-- [ ] T072 [US2] Create app/expense/[id].tsx for creating/editing individual expenses
-- [ ] T073 [US2] Add compassionate "tough month" message when safe-to-extra is negative in SafeToPayCard.tsx
-- [ ] T074 [US2] Add debt suggestion logic to SafeToPayCard.tsx based on user's payoff strategy
+- [x] T063 [US2] Create services/budget.ts with getMonthlyBudget, logIncome, getIncomeForMonth, getExpenses, createExpense, updateExpense, deleteExpense functions
+- [x] T064 [US2] Create stores/useBudgetStore.ts with income, expenses, monthlyBudget state and actions
+- [x] T065 [US2] Create hooks/useBudget.ts with React Query hooks for budget operations
+- [x] T066 [US2] Create components/budget/MonthSelector.tsx with month/year picker
+- [x] T067 [US2] Create components/budget/IncomeCard.tsx with income by source breakdown and add income button
+- [x] T068 [US2] Create components/budget/ExpenseList.tsx with grouped expenses (essential vs non-essential)
+- [x] T069 [US2] Create components/budget/SafeToPayCard.tsx with prominent safe-to-extra amount and suggested debt
+- [x] T070 [US2] Create app/(tabs)/budget.tsx with MonthSelector, IncomeCard, ExpenseList, SafeToPayCard
+- [x] T071 [US2] Create app/income/log.tsx modal for logging income (amount, source, notes)
+- [x] T072 [US2] Create app/expense/[id].tsx for creating/editing individual expenses
+- [x] T073 [US2] Add compassionate "tough month" message when safe-to-extra is negative in SafeToPayCard.tsx
+- [x] T074 [US2] Add debt suggestion logic to SafeToPayCard.tsx based on user's payoff strategy
 
 **Checkpoint**: User can manage budget and see safe-to-extra. Core value delivered.
 
